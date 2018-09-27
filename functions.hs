@@ -25,3 +25,20 @@ softmax logits =
         let exponents = [(e)**x | x <- logits]
             exponents_sum = sum exponents
         in [exponent/exponents_sum | exponent <- exponents]
+
+-- Loss Functions 
+
+mse ::(Floating a) => [a] -> [a] -> a
+mse x y
+        | length x == length y = let len = length x
+                                     total = sum [(xi - yi)**2 | (xi, yi) <- zip x y]
+                                 in total/(fromIntegral len)
+        | otherwise = error "Invalid Inputs: Lists of unequal lengths"
+
+
+l1_loss ::(Floating a) => [a] -> [a] -> a
+l1_loss x y
+        | length x == length y = let len = length x
+                                     total = sum [abs (xi - yi) | (xi, yi) <- zip x y]
+                                 in total/(fromIntegral len)
+        | otherwise = error "Invalid Inputs: Lists of unequal lengths"
